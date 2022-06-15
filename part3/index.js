@@ -8,6 +8,9 @@ app.use(express.json())
 const cors = require('cors')
 app.use(cors())
 
+//make express show static content (index.html; JS)
+app.use(express.static('build'))
+
 let notes = [
     {
       id: 1,
@@ -91,6 +94,13 @@ app.delete('/api/notes/:id', (request, response) => {
     response.status(204).end()
 })
 
+app.put('/api/notes/:id', (request, response) => {
+    const id = Number(request.params.id)
+    const changedNote = request.body
+
+    notes = notes.map(note => note.id !== id ? note : changedNote)
+    response.json(changedNote)
+})
 
 // Receiving data
 // app.post('/api/notes', (request, response) => {
